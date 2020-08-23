@@ -1,0 +1,48 @@
+<link rel="import" href="../../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../../bower_components/hiram-arellano/hiram-arellano.html">
+
+<dom-module id="workshop-app">
+    <template>
+    <style>
+      :host {
+        display: block;
+        color: blue;        
+      }
+    </style>
+    <h2>Bienvenido a [[prop1]]!</h2>
+    <hiram-arellano title="Titulo inline"></hiram-arellano>
+    <hiram-arellano title="[[title]]"></hiram-arellano>
+    <hiram-arellano title="{{inputLabel}}" input-value="{{inputLabel}}"></hiram-arellano>
+  </template>
+
+    <script>
+        /**
+         * @customElement
+         * @polymer
+         */
+        class WorkshopApp extends Polymer.Element {
+            static get is() {
+                return 'workshop-app';
+            }
+            static get properties() {
+                return {
+                    prop1: {
+                        type: String,
+                        value: 'workshop-app'
+                    },
+                    title: {
+                        type: String,
+                        value: 'Titulo con una propiedad'
+                    },
+                    inputLabel: {
+                        type: String,
+                        value: 'Data binding',
+                        notify: true
+                    }
+                };
+            }
+        }
+
+        window.customElements.define(WorkshopApp.is, WorkshopApp);
+    </script>
+</dom-module>

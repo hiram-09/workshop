@@ -1,0 +1,7 @@
+{
+  "name": "workshop",
+  "short_name": "workshop",
+  "description": "Primer aplicacion de polymer",
+  "start_url": "/",
+  "display": "standalone"
+}
