@@ -1,5 +1,6 @@
 <link rel="import" href="../../bower_components/polymer/polymer-element.html">
 <link rel="import" href="../../bower_components/hiram-arellano/hiram-arellano.html">
+<link rel="import" href="../../bower_components/login-element/login-element.html">
 
 <dom-module id="workshop-app">
     <template>
@@ -8,11 +9,36 @@
         display: block;
         color: blue;        
       }
+         hiram-arellano:nth-child(3){
+            --hiram-arellano-paper-card: {
+                background-color: blue;
+                font-family:fantasy;
+            }
+            --hiram-arellano-paper-button: {
+                background-color: red;
+                color: yellow;
+            }
+        }
+        hiram-arellano:nth-child(4){
+            --hiram-arellano-paper-card: {
+                background-color: violet;
+                font-family:cursive;
+            }
+            --hiram-arellano-paper-button: {
+                background-color: yellow;
+            }
+        }
     </style>
-    <h2>Bienvenido a [[prop1]]!</h2>
-    <hiram-arellano title="Titulo inline"></hiram-arellano>
-    <hiram-arellano title="[[title]]"></hiram-arellano>
-    <hiram-arellano title="{{inputLabel}}" input-value="{{inputLabel}}"></hiram-arellano>
+    <div hidden="{{!showDiv}}">
+        <login-element on-usuario-correcto-changed="prueba"></login-element>
+    </div>
+    <div hidden="{{showDiv}}" align="center">
+        <h2>Bienvenido a [[prop1]]!</h2>
+        <hiram-arellano title="Titulo inline"></hiram-arellano>
+        <hiram-arellano title="[[title]]"></hiram-arellano>
+        <hiram-arellano title="{{inputLabel}}" input-value="{{inputLabel}}"></hiram-arellano>
+    </div>
+    
   </template>
 
     <script>
@@ -38,8 +64,20 @@
                         type: String,
                         value: 'Data binding',
                         notify: true
+                    },
+                    showDiv: {
+                        type: Boolean,
+                        value: true,
+                        notify: true
                     }
                 };
+            }
+            prueba(e) {
+                console.log(e.detail);
+                if (e.detail.value) {
+                    alert("Acceso Correcto");
+                    this.showDiv = false;
+                }
             }
         }
 
