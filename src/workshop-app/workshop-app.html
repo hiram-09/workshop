@@ -1,45 +1,59 @@
 <link rel="import" href="../../bower_components/polymer/polymer-element.html">
 <link rel="import" href="../../bower_components/hiram-arellano/hiram-arellano.html">
 <link rel="import" href="../../bower_components/login-element/login-element.html">
+<link rel="import" href="../../bower_components/iron-ajax/iron-ajax.html">
 
 <dom-module id="workshop-app">
     <template>
-    <style>
-      :host {
-        display: block;
-        color: blue;        
-      }
-         hiram-arellano:nth-child(3){
-            --hiram-arellano-paper-card: {
-                background-color: blue;
-                font-family:fantasy;
-            }
-            --hiram-arellano-paper-button: {
-                background-color: red;
-                color: yellow;
-            }
+        <style>
+        :host {
+            display: block;
+            color: blue;        
         }
-        hiram-arellano:nth-child(4){
-            --hiram-arellano-paper-card: {
-                background-color: violet;
-                font-family:cursive;
+            hiram-arellano:nth-child(3){
+                --hiram-arellano-paper-card: {
+                    background-color: blue;
+                    font-family:fantasy;
+                }
+                --hiram-arellano-paper-button: {
+                    background-color: red;
+                    color: yellow;
+                }
             }
-            --hiram-arellano-paper-button: {
-                background-color: yellow;
+            hiram-arellano:nth-child(4){
+                --hiram-arellano-paper-card: {
+                    background-color: violet;
+                    font-family:cursive;
+                }
+                --hiram-arellano-paper-button: {
+                    background-color: yellow;
+                }
             }
-        }
-    </style>
-    <div hidden="{{!showDiv}}">
-        <login-element on-usuario-correcto-changed="prueba"></login-element>
-    </div>
-    <div hidden="{{showDiv}}" align="center">
-        <h2>Bienvenido a [[prop1]]!</h2>
-        <hiram-arellano title="Titulo inline"></hiram-arellano>
-        <hiram-arellano title="[[title]]"></hiram-arellano>
-        <hiram-arellano title="{{inputLabel}}" input-value="{{inputLabel}}"></hiram-arellano>
-    </div>
-    
-  </template>
+            .PaperCard{
+                width: 50vh;
+            }
+        </style>
+        <div hidden="{{!showDiv}}">
+            <login-element on-usuario-correcto-changed="prueba"></login-element>
+        </div>
+        <div hidden="{{showDiv}}" align="center">
+            <h2>Bienvenido a [[prop1]]!</h2>
+            <hiram-arellano title="Titulo inline"></hiram-arellano>
+            <hiram-arellano title="[[title]]"></hiram-arellano>
+            <hiram-arellano title="{{inputLabel}}" input-value="{{inputLabel}}"></hiram-arellano>
+        </div>
+        <iron-ajax
+            auto
+            url="https://pokeapi.co/api/v2/pokemon"
+            handle-as="json"
+            on-response="consulta"
+        ></iron-ajax>
+        <template is="dom-repeat" items="{{elementos}}">
+            <paper-card class="PaperCard" heading="{{item.name}}" image="https://pokeres.bastionbot.org/images/pokemon/{{getIndex(index)}}.png">
+                id: {{getIndex(index)}}
+            </paper-card>
+        </template>
+    </template>
 
     <script>
         /**
@@ -67,9 +81,14 @@
                     },
                     showDiv: {
                         type: Boolean,
-                        value: true,
+                        value: false,
                         notify: true
-                    }
+                    },
+                    elementos: {
+                        type: Array,
+                        value: []
+                    },
+                    url: String
                 };
             }
             prueba(e) {
@@ -79,6 +98,14 @@
                     this.showDiv = false;
                 }
             }
+            consulta(e) {
+                this.elementos = e.detail.response.results;
+            }
+            getIndex(index) {
+                let intIndex = parseInt(index) + 1;
+                return intIndex;
+            }
+
         }
 
         window.customElements.define(WorkshopApp.is, WorkshopApp);
